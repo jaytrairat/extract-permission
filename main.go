@@ -69,7 +69,7 @@ func extractPermission() {
 
 	preparedText := strings.Join(result, "\n")
 	clipboard.WriteAll(preparedText)
-	fmt.Println(time.Now().Format("2006-01-02 15:04:05") + " :: All permissions copied to clipboard")
+	fmt.Println(time.Now().Format("2006-01-02 15:04:05") + fmt.Sprintf(" :: %d All permissions copied to clipboard", len(result)))
 }
 
 var rootCmd = &cobra.Command{
