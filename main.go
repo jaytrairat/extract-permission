@@ -7,7 +7,9 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
+	"github.com/atotto/clipboard"
 	"github.com/jaytrairat/extract-permission/constant"
 )
 
@@ -23,7 +25,7 @@ func findManifestFile(rootDir string) []string {
 }
 
 func main() {
-	fmt.Println()
+	fmt.Println(time.Now().Format("2006-01-02 15:04:05") + " :: Start acquire permissions")
 	targetFiles := findManifestFile("./")
 	result := []string{}
 	if len(targetFiles) != 0 {
@@ -64,5 +66,7 @@ func main() {
 		}
 	}
 
-	fmt.Printf(strings.Join(result, "\n"))
+	preparedText := strings.Join(result, "\n")
+	clipboard.WriteAll(preparedText)
+	fmt.Println(time.Now().Format("2006-01-02 15:04:05") + " :: All permissions copied to clipboard")
 }
