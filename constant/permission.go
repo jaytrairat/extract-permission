@@ -141,14 +141,4 @@ var PERMISSION = []map[string]interface{}{
 		"SECURITY_LEVEL": "Normal",
 		"DESCRIPTION":    "ข้ามการจำกัดการใช้งานแบตเตอรี่",
 	},
-	{
-		"TYPE":           "xxx",
-		"SECURITY_LEVEL": "xxx",
-		"DESCRIPTION":    "xxx",
-	},
-	{
-		"TYPE":           "xxx",
-		"SECURITY_LEVEL": "xxx",
-		"DESCRIPTION":    "xxx",
-	},
 }

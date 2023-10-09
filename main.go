@@ -11,6 +11,7 @@ import (
 
 	"github.com/atotto/clipboard"
 	"github.com/jaytrairat/extract-permission/constant"
+	"github.com/spf13/cobra"
 )
 
 func findManifestFile(rootDir string) []string {
@@ -24,7 +25,7 @@ func findManifestFile(rootDir string) []string {
 	return manifestFiles
 }
 
-func main() {
+func extractPermission() {
 	fmt.Println(time.Now().Format("2006-01-02 15:04:05") + " :: Start acquire permissions")
 	targetFiles := findManifestFile("./")
 	result := []string{}
@@ -69,4 +70,16 @@ func main() {
 	preparedText := strings.Join(result, "\n")
 	clipboard.WriteAll(preparedText)
 	fmt.Println(time.Now().Format("2006-01-02 15:04:05") + " :: All permissions copied to clipboard")
+}
+
+var rootCmd = &cobra.Command{
+	Use:   "extract-permission",
+	Short: "A tool for extracting permissions from AndroidManifest.xml files",
+	Run: func(cmd *cobra.Command, args []string) {
+		extractPermission()
+	},
+}
+
+func main() {
+	rootCmd.Execute()
 }
