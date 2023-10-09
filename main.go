@@ -56,7 +56,7 @@ func extractPermission() {
 							}
 						}
 						if permissionIndex != -1 {
-							currentLine = fmt.Sprintf("%s\t%s", splitedPermission[2], constant.PERMISSION[permissionIndex]["DESCRIPTION"])
+							currentLine = fmt.Sprintf("%s\t%s\t%s", constant.PERMISSION[permissionIndex]["TYPE"], constant.PERMISSION[permissionIndex]["SECURITY_LEVEL"], constant.PERMISSION[permissionIndex]["DESCRIPTION"])
 						} else {
 							currentLine = fmt.Sprintf("%s\t", splitedPermission[2])
 						}
