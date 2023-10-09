@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func findManifestFile(rootDir string) []string {
@@ -18,6 +20,25 @@ func findManifestFile(rootDir string) []string {
 }
 
 func main() {
-	targetFile := findManifestFile("./")
-	fmt.Println(targetFile)
+	targetFiles := findManifestFile("./")
+	result := []string{}
+	if len(targetFiles) != 0 {
+		for _, currentFile := range targetFiles {
+			file, err := os.Open(currentFile)
+			if err != nil {
+				os.Exit(1)
+			}
+			defer file.Close()
+
+			scanner := bufio.NewScanner(file)
+			for scanner.Scan() {
+				currentLine := scanner.Text()
+				if strings.Contains(currentLine, "uses-permission") {
+					result = append(result, strings.TrimSpace(currentLine))
+				}
+			}
+		}
+	}
+
+	fmt.Printf(strings.Join(result, "\n"))
 }
