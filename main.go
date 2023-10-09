@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
+
+	"github.com/jaytrairat/extract-permission/constant"
 )
 
 func findManifestFile(rootDir string) []string {
@@ -20,6 +23,7 @@ func findManifestFile(rootDir string) []string {
 }
 
 func main() {
+	fmt.Println()
 	targetFiles := findManifestFile("./")
 	result := []string{}
 	if len(targetFiles) != 0 {
@@ -34,7 +38,27 @@ func main() {
 			for scanner.Scan() {
 				currentLine := scanner.Text()
 				if strings.Contains(currentLine, "uses-permission") {
-					result = append(result, strings.TrimSpace(currentLine))
+					currentLine = strings.TrimSpace(currentLine)
+					extractedPermission := regexp.MustCompile(`android:name="([^"]+)"`).FindStringSubmatch(currentLine)
+					if len(extractedPermission) > 1 {
+						currentLine = extractedPermission[1]
+					}
+					splitedPermission := strings.Split(currentLine, ".")
+					if len(splitedPermission) == 3 {
+						permissionIndex := -1
+						for i, item := range constant.PERMISSION {
+							if item["TYPE"] == splitedPermission[2] {
+								permissionIndex = i
+								break
+							}
+						}
+						if permissionIndex != -1 {
+							currentLine = fmt.Sprintf("%s\t%s", splitedPermission[2], constant.PERMISSION[permissionIndex]["DESCRIPTION"])
+						} else {
+							currentLine = fmt.Sprintf("%s\t", splitedPermission[2])
+						}
+					}
+					result = append(result, currentLine)
 				}
 			}
 		}
